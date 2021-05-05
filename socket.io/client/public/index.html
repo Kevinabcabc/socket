@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <script src="./scripts/socket.io.js"></script>
+</head>
+<body>
+  <h1>聊天室</h1>
+  <div id="content" name='name' style="height: 400px;width: 300px;border: 1px solid black;"></div>
+  <br/>
+  <div>
+    <input type="text" id="msg" style="width: 200px;">
+  </div>
+  <button id="submit">发送</button>
+  <script>
+    var socket = io.connect('http://localhost:9527');
+    const content = document.getElementById("content");
+
+    document.querySelector('#submit')
+      .addEventListener('click', () => {
+        let msg2 = msg.value;
+        socket.emit('receive', msg2);
+        msg.value = '';
+        content.innerHTML += msg2 + '<br/>';
+      }, false);
+
+      // 自己发送信息默认收不到
+    socket.on("message", (msg) => {
+      content.innerHTML += msg + '<br/>';
+    });
+  </script>
+</body>
+</html>
